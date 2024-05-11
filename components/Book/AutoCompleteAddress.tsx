@@ -86,8 +86,9 @@ function AutoCompleteAddress() {
 
             {addressList?.suggestions && sourceChange ?
             <div className='mt-2'>
-                {addressList?.suggestions.map((item:any)=>(
-                    <h2 className='hover:bg-blue-100 p-2 cursor-pointer rounded-md'
+                {addressList?.suggestions.map((item:any, index:number)=>(
+                    <h2 key={index}
+                    className='hover:bg-blue-100 p-2 cursor-pointer rounded-md'
                     onClick={()=>{ onSourceClick(item) }}>
                         
                     {item.full_address}
@@ -106,8 +107,9 @@ function AutoCompleteAddress() {
             />
             {addressList?.suggestions && destinationChange ?
             <div className='mt-2'>
-                {addressList?.suggestions.map((item:any)=>(
-                    <h2 className='hover:bg-blue-100 p-2 cursor-pointer rounded-md'
+                {addressList?.suggestions.map((item:any, index:number)=>(
+                    <h2 key={index}
+                    className='hover:bg-blue-100 p-2 cursor-pointer rounded-md'
                     onClick={()=>{ onDestClick(item) }}>
                         
                         {item.full_address}
