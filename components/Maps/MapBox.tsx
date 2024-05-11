@@ -21,7 +21,28 @@ function MapBox() {
   const{destCoord,setDestCoord}=useContext(DestCoordContext);
 
   const{directionData,setDirectionData}=useContext(DirectionDataContext);
-  
+
+  useEffect(()=>{
+      if(sourceCoord){
+        mapRef.current?.flyTo({
+          center:[sourceCoord.lon, sourceCoord.lat],
+          duration:2500
+        })
+      }
+  },[sourceCoord])
+
+  useEffect(()=>{
+    if(destCoord){
+      mapRef.current?.flyTo({
+        center:[destCoord.lon, destCoord.lat],
+        duration:1000
+      })
+    }
+    if(sourceCoord && destCoord){
+      getDirectionRoute()
+    }
+  },[destCoord])
+
   const getDirectionRoute=async()=>{
     const response= await fetch(MAPBOX_DRIVING_ENDPOINT+
       sourceCoord.lon+','+ sourceCoord.lat+';'+
@@ -37,27 +58,6 @@ function MapBox() {
     const result=await response.json()
     setDirectionData(result)
   }
-  useEffect(()=>{
-      if(sourceCoord){
-        mapRef.current?.flyTo({
-          center:[sourceCoord.lon, sourceCoord.lat],
-          duration:2500
-        })
-      }
-  },[sourceCoord])
-  
-  useEffect(()=>{
-    if(destCoord){
-      mapRef.current?.flyTo({
-        center:[destCoord.lon, destCoord.lat],
-        duration:1000
-      })
-    }
-    if(sourceCoord && destCoord){
-      getDirectionRoute()
-    }
-  },[destCoord, sourceCoord, getDirectionRoute])
-
 
  
   return (
