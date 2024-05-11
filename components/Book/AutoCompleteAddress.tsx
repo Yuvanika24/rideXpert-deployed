@@ -1,3 +1,4 @@
+'use client'
 import { DestCoordContext } from '@/context/DestCoordContext'
 import { SourceCoordContext } from '@/context/SourceCoordContext'
 import React, { useContext, useEffect, useState } from 'react'
@@ -18,6 +19,13 @@ function AutoCompleteAddress() {
     const{sourceCoord,setSourceCoord}=useContext(SourceCoordContext)
     const{destCoord,setDestCoord}=useContext(DestCoordContext)
 
+    useEffect(()=>{
+        const delay=setTimeout(()=>{
+            getAddressList()
+        },1000)
+        return()=>clearTimeout(delay)
+    },[source,destination]);
+
     const getAddressList=async()=>{
         setAddressList([]);
         const query = sourceChange ? source : destination; 
@@ -32,13 +40,6 @@ function AutoCompleteAddress() {
         setAddressList(result);
         }
     }
-
-    useEffect(()=>{
-        const delay=setTimeout(()=>{
-            getAddressList()
-        },1000)
-        return()=>clearTimeout(delay)
-    },[source,destination, getAddressList]); // Include getAddressList in the dependency array
 
     const onSourceClick=async(item:any)=>{
         setSource(item.full_address);
@@ -85,9 +86,8 @@ function AutoCompleteAddress() {
 
             {addressList?.suggestions && sourceChange ?
             <div className='mt-2'>
-                {addressList?.suggestions.map((item:any, index:number)=>(
-                    <h2 key={index} 
-                    className='hover:bg-blue-100 p-2 cursor-pointer rounded-md'
+                {addressList?.suggestions.map((item:any)=>(
+                    <h2 className='hover:bg-blue-100 p-2 cursor-pointer rounded-md'
                     onClick={()=>{ onSourceClick(item) }}>
                         
                     {item.full_address}
@@ -106,9 +106,8 @@ function AutoCompleteAddress() {
             />
             {addressList?.suggestions && destinationChange ?
             <div className='mt-2'>
-                {addressList?.suggestions.map((item:any, index:number)=>(
-                    <h2 key={index} 
-                    className='hover:bg-blue-100 p-2 cursor-pointer rounded-md'
+                {addressList?.suggestions.map((item:any)=>(
+                    <h2 className='hover:bg-blue-100 p-2 cursor-pointer rounded-md'
                     onClick={()=>{ onDestClick(item) }}>
                         
                         {item.full_address}
